@@ -17,11 +17,11 @@ ask user to type in an email address; if valid, log confirmation message, else a
 
 ### Step 2
 
-once we have a valid email - I used the [extract-domain](https://www.npmjs.com/package/extract-domain) module to get the domain name.
+once we have a valid email - we need to get the domain name a simple indexOf method splits the email at the last index of the '@' sign - this will work with some edge cases as well: john\@doe , "john@@".doe , "j@hn".d\@e
 
 ### Step 3
 
-using [request-promise](https://github.com/request/request-promise) and [cheerio](https://github.com/cheeriojs/cheerio) extract the relevant information from the site.
+using [request-promise](https://github.com/request/request-promise) and [cheerio](https://github.com/cheeriojs/cheerio) extract text from the site. Pass the requested string to [Knwl.js](https://github.com/benhmoore/Knwl.js) and use the default plugins (emails, phones, addresses) to parse through it.
 
 ### Step 4
 

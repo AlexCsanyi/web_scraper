@@ -6,7 +6,8 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "email-validator": "^2.0.4",
-    "extract-domain": "^2.2.1",
+    "freemail": "^1.6.0",
+    "knwl.js": "^1.0.2",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"
   },
