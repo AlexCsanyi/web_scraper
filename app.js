@@ -1,15 +1,15 @@
 const readLine = require("readline");
 const validator = require("email-validator");
 const extractDomain = require("extract-domain");
-const rp = require("request-promise");
+const request = require("request-promise");
 const cheerio = require("cheerio");
 
-const rl = readLine.createInterface({
+const readLineInterface = readLine.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-rl.question(`Please type your email address: \n`, userInput => {
+readLineInterface.question(`Please type your email address: \n`, userInput => {
   if (validator.validate(userInput.trim())) {
     let domain = extractDomain(userInput);
 
@@ -20,7 +20,7 @@ rl.question(`Please type your email address: \n`, userInput => {
       }
     };
 
-    rp(options)
+    request(options)
       .then(function($) {
         const footer = $(".footer");
         const output = footer.find("a").text();
@@ -29,24 +29,26 @@ rl.question(`Please type your email address: \n`, userInput => {
       .catch(function(err) {
         console.log(err);
       });
-    rl.close();
+    readLineInterface.close();
   } else {
-    rl.setPrompt(
+    readLineInterface.setPrompt(
       "Incorrect email, please try again or enter a different email \n"
     );
-    rl.prompt();
-    rl.on("line", userInput => {
+    readLineInterface.prompt();
+    readLineInterface.on("line", userInput => {
       if (validator.validate(userInput.trim())) {
-        rl.close();
+        readLineInterface.close();
       } else {
-        rl.setPrompt(`Your answer of ${userInput} is incorrect, try again \n`);
-        rl.prompt();
+        readLineInterface.setPrompt(
+          `Your answer of ${userInput} is incorrect, try again \n`
+        );
+        readLineInterface.prompt();
       }
     });
   }
 });
 
-rl.on("close", () => {
+readLineInterface.on("close", () => {
   console.log(
     "Thank you, the email is valid, now please wait until we look for the company's details"
   );
