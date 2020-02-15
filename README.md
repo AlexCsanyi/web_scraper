@@ -13,7 +13,7 @@ open your favoourite editor / terminal and type in the following:
 ### Step 1
 
 added [email-validator](https://www.npmjs.com/package/email-validator) module to validate an e-mail address  
-ask user to type in an email address; if valid log confirmation message else ask user to retry or enter a different one
+ask user to type in an email address; if valid, log confirmation message, else ask user to retry or enter a different one
 
 ### Step 2
 
@@ -21,4 +21,8 @@ once we have a valid email - I used the [extract-domain](https://www.npmjs.com/p
 
 ### Step 3
 
-using [request-promise](https://github.com/request/request-promise) and [cheerio](https://github.com/cheeriojs/cheerio) extract the site to get the company details.
+using [request-promise](https://github.com/request/request-promise) and [cheerio](https://github.com/cheeriojs/cheerio) extract the relevant information from the site.
+
+### Step 4
+
+`console.log` the results
