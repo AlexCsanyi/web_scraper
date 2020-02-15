@@ -4,7 +4,7 @@ Web scraper to obtain additional information about the company based on an email
 
 ## Usage and installation
 
-open your favoourite editor / terminal and type in the following:  
+open your favourite editor / terminal and type in the following:  
 `cd your-destination-folder`  
 `git clone https://github.com/AlexCsanyi/web_scraper`  
 `npm install` - this will install dependencies  
