@@ -1,0 +1,27 @@
+{
+  "name": "web_scraper",
+  "version": "1.0.0",
+  "description": "web scraper",
+  "main": "app.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "email-validator": "^2.0.4",
+    "extract-domain": "^2.2.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexCsanyi/web_scraper.git"
+  },
+  "author": "Alex Csanyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexCsanyi/web_scraper/issues"
+  },
+  "homepage": "https://github.com/AlexCsanyi/web_scraper#readme"
+}
