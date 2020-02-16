@@ -69,9 +69,7 @@ const getOutput = options =>
         console.log("No email address found");
       }
 
-      // if we found numbers at the first attempt log the numbers and their indexes
-      // or if nothing found see if knwl.js has anything
-      // if still nothing found log 'not found'
+      // log the numbers and their indexes else log 'not found'
       if (uniquePhones.length !== 0) {
         uniquePhones.map((element, index) =>
           console.log(`phone number ${index + 1}: ${element.phone}`)
@@ -141,7 +139,6 @@ readLineInterface.question(`Please type your email address: \n`, userInput => {
 
 readLineInterface.on("close", () => {
   console.log(
-    "Thank you, the email is valid, now please wait until we look for the company's details ",
-    domainName
+    "Thank you, the email is valid, now please wait until we look for the company's details "
   );
 });
