@@ -12,6 +12,8 @@ const readLineInterface = readLine.createInterface({
   output: process.stdout
 });
 
+const domainName = [];
+
 const getOutput = options =>
   request(options)
     .then(function($) {
@@ -88,6 +90,7 @@ readLineInterface.question(`Please type your email address: \n`, userInput => {
     !freemail.isFree(userInput.trim())
   ) {
     let domain = userInput.substring(userInput.lastIndexOf("@") + 1);
+    domainName.push(domain);
     let options = {
       uri: `https://www.${domain}`,
       transform: function(body) {
@@ -116,7 +119,7 @@ readLineInterface.question(`Please type your email address: \n`, userInput => {
         !freemail.isFree(userInput.trim())
       ) {
         let domain = userInput.substring(userInput.lastIndexOf("@") + 1);
-
+        domainName.push(domain);
         let options = {
           uri: `https://${domain}`,
           transform: function(body) {
@@ -138,6 +141,7 @@ readLineInterface.question(`Please type your email address: \n`, userInput => {
 
 readLineInterface.on("close", () => {
   console.log(
-    "Thank you, the email is valid, now please wait until we look for the company's details"
+    "Thank you, the email is valid, now please wait until we look for the company's details ",
+    domainName
   );
 });
