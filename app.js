@@ -41,16 +41,30 @@ const getOutput = options =>
       // libphonenumber-js to find international formatted numbers etc..
       const parsedPhones = phoneUtil.findPhoneNumbersInText(text);
 
+      // get only unique phones using Set and map
+      const uniquePhones = Array.from(
+        new Set(parsedPhones.map(phone => phone.number.number))
+      ).map(number => {
+        return parsedPhones.find(phone => phone.number.number === number);
+      });
+
       // find emails in the text using knwl.js
       knwlInstance.init(text);
       const parsedEmails = knwlInstance.get("emails");
+
+      // get only unique emails using Set and map
+      const uniqueEmails = Array.from(
+        new Set(parsedEmails.map(email => email.address))
+      ).map(address => {
+        return parsedEmails.find(email => email.address === address);
+      });
 
       // in case libphonenumber-js fails, we try with knwl.js as well to find numbers
       const alternativeParsedPhone = knwlInstance.get("phones");
 
       // if we found emails log the addresses and their indexs else 'not found'
-      if (parsedEmails.length !== 0) {
-        parsedEmails.map((element, index) =>
+      if (uniqueEmails.length !== 0) {
+        uniqueEmails.map((element, index) =>
           console.log(`email ${index + 1}: ${element.address}`)
         );
       } else {
@@ -60,8 +74,8 @@ const getOutput = options =>
       // if we found numbers at the first attempt log the numbers and their indexes
       // or if nothing found see if knwl.js has anything
       // if still nothing found log 'not found'
-      if (parsedPhones.length !== 0) {
-        parsedPhones.map((element, index) =>
+      if (uniquePhones.length !== 0) {
+        uniquePhones.map((element, index) =>
           console.log(
             `phone number ${index + 1}: ${element.number.number} (country: ${
               element.number.country
