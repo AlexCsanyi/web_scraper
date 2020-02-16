@@ -4,7 +4,9 @@ const freemail = require("freemail");
 const request = require("request-promise");
 const cheerio = require("cheerio");
 const Knwl = require("knwl.js");
-const knwlInstance = new Knwl();
+const phoneUtil = require("libphonenumber-js");
+
+const knwlInstance = new Knwl("english");
 
 const readLineInterface = readLine.createInterface({
   input: process.stdin,
@@ -14,16 +16,65 @@ const readLineInterface = readLine.createInterface({
 const getOutput = options =>
   request(options)
     .then(function($) {
-      const text = $("html")
-        .find("body")
-        .text();
+      // get all the content, but keep spaces and line breaks so emails and numbers stay separated
+      // we reomve these later
+      const rawText = $("body *")
+        .contents()
+        .map(function() {
+          return this.type === "text"
+            ? $(this)
+                .text()
+                .trim() + " "
+            : "";
+        })
+        .get()
+        .join(" ");
 
+      // regex to remove spaces between numbers - so the phone parsing libraries can find them easier
+      const regex = /(\d)\s+(?=\d)/g;
+      const subst = `$1`;
+      const correctedText = rawText.replace(regex, subst);
+
+      // regex to remove spaces, tabs, newlines, and replace them with a single space
+      const text = correctedText.replace(/\s\s+/g, " ");
+
+      // libphonenumber-js to find international formatted numbers etc..
+      const parsedPhones = phoneUtil.findPhoneNumbersInText(text);
+
+      // find emails in the text using knwl.js
       knwlInstance.init(text);
-
       const parsedEmails = knwlInstance.get("emails");
-      const parsedPhones = knwlInstance.get("phones");
 
-      console.log(parsedEmails, parsedPhones);
+      // in case libphonenumber-js fails, we try with knwl.js as well to find numbers
+      const alternativeParsedPhone = knwlInstance.get("phones");
+
+      // if we found emails log the addresses and their indexs else 'not found'
+      if (parsedEmails.length !== 0) {
+        parsedEmails.map((element, index) =>
+          console.log(`email ${index + 1}: ${element.address}`)
+        );
+      } else {
+        console.log("No email address found");
+      }
+
+      // if we found numbers at the first attempt log the numbers and their indexes
+      // or if nothing found see if knwl.js has anything
+      // if still nothing found log 'not found'
+      if (parsedPhones.length !== 0) {
+        parsedPhones.map((element, index) =>
+          console.log(
+            `phone number ${index + 1}: ${element.number.number} (country: ${
+              element.number.country
+            } - country calling code: ${element.number.countryCallingCode})`
+          )
+        );
+      } else if (alternativeParsedPhone.length !== 0) {
+        alternativeParsedPhone.map((element, index) => {
+          console.log(`phone number ${index + 1}: ${element.phone}`);
+        });
+      } else {
+        console.log("No phone numbers found");
+      }
     })
     .catch(function(err) {
       console.log(err);
@@ -36,7 +87,7 @@ readLineInterface.question(`Please type your email address: \n`, userInput => {
   ) {
     let domain = userInput.substring(userInput.lastIndexOf("@") + 1);
     let options = {
-      uri: `https://${domain}`,
+      uri: `https://www.${domain}`,
       transform: function(body) {
         return cheerio.load(body);
       }

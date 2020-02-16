@@ -8,6 +8,7 @@
     "email-validator": "^2.0.4",
     "freemail": "^1.6.0",
     "knwl.js": "^1.0.2",
+    "libphonenumber-js": "^1.7.40",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"
   },
