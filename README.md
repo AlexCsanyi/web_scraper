@@ -21,7 +21,7 @@ once we have a valid email - we need to get the domain name a simple indexOf met
 
 ### Step 3
 
-using [request-promise](https://github.com/request/request-promise) and [cheerio](https://github.com/cheeriojs/cheerio) extract text from the site. Clean it and pass the cleaned string to [Knwl.js](https://github.com/benhmoore/Knwl.js) and use the default plugins (emails, phones) to parse through it. Pass the cleaned string to [libphonenumber-js](https://www.npmjs.com/package/libphonenumber-js) as well, as it seems to perform more accurately in some scenarios, like international numbers.
+using [request-promise](https://github.com/request/request-promise) and [cheerio](https://github.com/cheeriojs/cheerio) extract text from the site. Clean it and pass the cleaned string to [Knwl.js](https://github.com/benhmoore/Knwl.js) and use the default plugins (emails, phones) to parse through it.
 
 ### Step 4
 
@@ -30,8 +30,9 @@ using [request-promise](https://github.com/request/request-promise) and [cheerio
 #### getOutput()
 
 this is the main function; it gets all of the body element's children's content on the webpage. If the type is text it gets the text content and trims the whitespace but keeps a single space between, then the results are moved in an array using the get() method and the elements of the array are joined.  
-This was done becasue the text() method doesn't keep the a single space between text content and that reduced the accuracy of getting email addresses.  
-Once we have the raw text I used regex to remove space between phone numbers. After this I replaced all tabs, new lines, multiple spaces etc... with a single space.  
-Once our string is cleaned I parsed them with knwl.js and libphonenumber-js to find emails and phones.  
+This was done becasue the text() method doesn't keep the single space between text content and that reduced the accuracy of getting email addresses.  
+Once we have the raw text I used regex to remove space between phone numbers, and removed the '+' sign in front of them. After this I replaced all tabs, new lines, multiple spaces etc... with a single space.  
+Once our string is cleaned I parsed them with knwl.js to find emails and phones.  
+Then I got the unique values only from the array of objects.  
 Using map I console log each element in the result arrays and their indexes + 1  
 If nothing is found I log a 'not found' message.
