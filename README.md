@@ -36,3 +36,16 @@ Once our string is cleaned I parsed them with knwl.js to find emails and phones.
 Then I got the unique values only from the array of objects.  
 Using map I console log each element in the result arrays and their indexes + 1  
 If nothing is found I log a 'not found' message.
+
+#### Test Results
+
+[A document listing the pages I visited with the outputs](test.md)
+
+### Limitations
+
+- A lot of sites don't share the email on the main page and have a dedicated contact page.
+The solution I am currently working on:  
+  - Get all the 'a' HTML elements  from the first page => get the "href" attributes of these and store them in an array => see which one of those contain the same domain name or are linking to a relative path => maybe see if any of the remaining links contain the word "contact" => if yes try that page first and just run my "getOutput()" function on it. In case there is no link with the word "contact" in it, I'd try the first 5 -10 links (they likely to be navigation links) and stop as soon as a result is found
+
+- Mobile numbers  
+  Some mobile numbers are not recognized as phone numbers by knwl.js
