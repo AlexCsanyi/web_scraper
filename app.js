@@ -100,7 +100,9 @@ const getOutput = options =>
           "No phone numbers or email addresses found on page 1, please wait while we look for one on another page"
         );
         let options = {
-          uri: `https://www.${domainName[0]}${isThereContactLink[0]}`,
+          uri: isThereContactLink[0].startsWith("http")
+            ? `${isThereContactLink[0]}`
+            : `https://www.${domainName[0]}${isThereContactLink[0]}`,
           transform: function(body) {
             return cheerio.load(body);
           }
