@@ -49,7 +49,7 @@ The solution I am currently working on:
     - We only get to run this function if 3 circumstances are met: 1. no email found on first page 2. no phone found on first page 3. we found a link with any of the "contact" or "touch" or "find" keywords in it
     - you can test this working on the below example:  
     https://jonathanoakes.com/ test email : alex@jonathanoakes.com     
-    First time around we get no results but then we visit the contact page and get the results from there, we log the link address and the results:
+    First time around we get no results but then we visit the contact page and get the results from there, we log the link address and the results:  
     alt page (/contact): email 1: jonathan@jonathanoakes.com  
     alt page (/contact): phone 1: (783) 110-7405  
 
