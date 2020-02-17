@@ -60,13 +60,26 @@ const getOutput = options =>
         return parsedPhones.find(phone => phone.number === number);
       });
 
+      // get all links and see if any of thoe include key words that might be a contact page
+      const isThereContactLink = $("a")
+        .map(function() {
+          return $(this).attr("href");
+        })
+        .toArray()
+        .filter(
+          link =>
+            link.includes("contact") ||
+            link.includes("touch") ||
+            link.includes("find")
+        );
+
       // if we found emails log the addresses and their indexs else 'not found'
       if (uniqueEmails.length !== 0) {
         uniqueEmails.map((element, index) =>
           console.log(`email ${index + 1}: ${element.address}`)
         );
       } else {
-        console.log("No email address found");
+        console.log("No email address found on first page");
       }
 
       // log the numbers and their indexes else log 'not found'
@@ -75,7 +88,66 @@ const getOutput = options =>
           console.log(`phone number ${index + 1}: ${element.phone}`)
         );
       } else {
-        console.log("No phone numbers found");
+        console.log("No phone numbers found on first page");
+      }
+
+      if (
+        uniquePhones.length === 0 &&
+        uniqueEmails.length === 0 &&
+        isThereContactLink.length !== 0
+      ) {
+        console.log(
+          "No phone numbers or email addresses found on page 1, please wait while we look for one on another page"
+        );
+        let options = {
+          uri: `https://www.${domainName[0]}${isThereContactLink[0]}`,
+          transform: function(body) {
+            return cheerio.load(body);
+          }
+        };
+        request(options)
+          .then(function($) {
+            const rawContactText = $("body *")
+              .contents()
+              .map(function() {
+                return this.type === "text"
+                  ? $(this)
+                      .text()
+                      .trim() + " "
+                  : "";
+              })
+              .get()
+              .join(" ");
+
+            const correctedContacTText = rawContactText
+              .replace(regex, subst)
+              .replace(/\+/g, "");
+            const ContactText = correctedContacTText.replace(/\s\s+/g, " ");
+            knwlInstance.init(ContactText);
+            const parsedContactEmails = knwlInstance.get("emails");
+            const parsedContactPhones = knwlInstance.get("phones");
+
+            parsedContactEmails.map((element, index) =>
+              console.log(
+                `alt page (${isThereContactLink[0]}): email ${index + 1}: ${
+                  element.address
+                }`
+              )
+            );
+
+            parsedContactPhones.map((element, index) =>
+              console.log(
+                `alt page (${isThereContactLink[0]}): phone ${index + 1}: ${
+                  element.phone
+                }`
+              )
+            );
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      } else {
+        console.log("no emails or phone numbers found");
       }
     })
     .catch(function(err) {
