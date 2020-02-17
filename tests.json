@@ -1,0 +1,20 @@
+[
+  {
+    "address": "https://eddiegarside.com/",
+    "test-email": "alex@eddiegarside.com",
+    "expected-email-output": "email 1: eddiegarside@gmail.com",
+    "expected-phone-output": "phone number 1: +0 (755) 736-7937"
+  },
+  {
+    "address": "https://www.kompli-global.com/",
+    "test-email": "alex@kompli-global.com",
+    "expected-email-output": "No email address found",
+    "expected-phone-output": "phone number 1: +44 (203) 199-7115"
+  },
+  {
+    "address": "https://www.canddi.com/",
+    "test-email": "alex@canddi.com",
+    "expected-email-output": "email 1: hello@canddi.com",
+    "expected-phone-output": "phone number 1: +0 (161) 414-1080"
+  }
+]

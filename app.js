@@ -148,8 +148,6 @@ const getOutput = options =>
           .catch(function(err) {
             console.log(err);
           });
-      } else {
-        console.log("no emails or phone numbers found");
       }
     })
     .catch(function(err) {
